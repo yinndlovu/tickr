@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "tickr",
+    "name": "Tickr",
     "slug": "tickr",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -25,6 +25,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "17f4b500-1a6c-4952-9f15-0ec32bbcb72c"
+      }
+    },
+    "owner": "yinn"
   }
 }

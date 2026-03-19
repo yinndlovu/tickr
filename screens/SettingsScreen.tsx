@@ -6,10 +6,12 @@ import { useNavigation } from "@react-navigation/native";
 
 // internal
 import { useTheme } from "../context/ThemeContext";
+import { usePreferences } from "../context/PreferencesContext";
 import { AppText } from "../components/AppText";
 
 const SettingsScreen: React.FC = () => {
   const { theme, isDark, toggleTheme } = useTheme();
+  const { timeDisplayMode, setTimeDisplayMode } = usePreferences();
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
 
@@ -59,6 +61,82 @@ const SettingsScreen: React.FC = () => {
             trackColor={{ false: theme.accent, true: theme.primary }}
           />
         </View>
+
+        <View
+          style={[
+            styles.row,
+            {
+              backgroundColor: theme.card,
+              borderColor: theme.accent,
+              marginTop: 12,
+              alignItems: "flex-start",
+            },
+          ]}
+        >
+          <View style={[styles.labelGroup, { paddingTop: 2 }]}>
+            <Ionicons name="time-outline" size={20} color={theme.primary} />
+            <View style={{ gap: 4 }}>
+              <AppText
+                variant="medium"
+                style={[styles.rowText, { color: theme.text }]}
+              >
+                Time display
+              </AppText>
+              <AppText variant="light" style={{ color: theme.subtext, fontSize: 12 }}>
+                Choose how progress is shown
+              </AppText>
+            </View>
+          </View>
+
+          <View style={styles.choiceColumn}>
+            <TouchableOpacity
+              onPress={() => setTimeDisplayMode("days_hours")}
+              style={[
+                styles.choice,
+                {
+                  borderColor: theme.accent,
+                  backgroundColor:
+                    timeDisplayMode === "days_hours"
+                      ? theme.primary + "20"
+                      : "transparent",
+                },
+              ]}
+            >
+              <AppText
+                variant="medium"
+                style={{ color: timeDisplayMode === "days_hours" ? theme.primary : theme.text }}
+              >
+                67 days • 3 hrs
+              </AppText>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => setTimeDisplayMode("months_days_hours")}
+              style={[
+                styles.choice,
+                {
+                  borderColor: theme.accent,
+                  backgroundColor:
+                    timeDisplayMode === "months_days_hours"
+                      ? theme.primary + "20"
+                      : "transparent",
+                },
+              ]}
+            >
+              <AppText
+                variant="medium"
+                style={{
+                  color:
+                    timeDisplayMode === "months_days_hours"
+                      ? theme.primary
+                      : theme.text,
+                }}
+              >
+                2 months 5 days • 3 hrs
+              </AppText>
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
 
       <AppText variant="light" style={styles.version}>
@@ -98,6 +176,18 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 12,
+  },
+  choiceColumn: {
+    gap: 10,
+    alignItems: "flex-end",
+  },
+  choice: {
+    borderWidth: 1,
+    borderRadius: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    minWidth: 170,
+    alignItems: "center",
   },
   rowText: {
     fontSize: 16,

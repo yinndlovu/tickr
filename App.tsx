@@ -9,6 +9,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 // contexts
 import { ThemeProvider, useTheme } from "./context/ThemeContext";
+import { PreferencesProvider } from "./context/PreferencesContext";
 
 // screens
 import HomeScreen from "./screens/HomeScreen";
@@ -57,7 +58,9 @@ export default function App() {
     <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
       <SafeAreaProvider>
         <ThemeProvider>
-          <AppContent />
+          <PreferencesProvider>
+            <AppContent />
+          </PreferencesProvider>
         </ThemeProvider>
       </SafeAreaProvider>
     </View>

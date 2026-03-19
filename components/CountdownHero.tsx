@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { intervalToDuration } from "date-fns";
 import { Habit } from "../types/habit";
 import { useTheme } from "../context/ThemeContext";
 import { AppText } from "./AppText";
+import { usePreferences } from "../context/PreferencesContext";
+import { formatHabitDuration } from "../services/timeDisplay";
 
 interface Props {
   habit: Habit;
@@ -12,19 +13,16 @@ interface Props {
 
 const CountdownHero: React.FC<Props> = ({ habit, onOpenPicker }) => {
   const { theme } = useTheme();
+  const { timeDisplayMode } = usePreferences();
 
-  const getTime = () =>
-    intervalToDuration({
-      start: new Date(habit.startDate),
-      end: new Date(),
-    });
-
+  const getTime = () => formatHabitDuration(habit.startDate, timeDisplayMode);
   const [duration, setDuration] = useState(getTime());
 
   useEffect(() => {
+    setDuration(getTime());
     const timer = setInterval(() => setDuration(getTime()), 60000);
     return () => clearInterval(timer);
-  }, [habit]);
+  }, [habit.startDate, timeDisplayMode]);
 
   return (
     <View style={[styles.container, { backgroundColor: theme.primary }]}>
@@ -35,8 +33,18 @@ const CountdownHero: React.FC<Props> = ({ habit, onOpenPicker }) => {
       </TouchableOpacity>
 
       <View style={styles.row}>
-        <TimeBlock value={duration.days || 0} label="DAYS" />
-        <TimeBlock value={duration.hours || 0} label="HRS" />
+        {timeDisplayMode === "days_hours" ? (
+          <>
+            <TimeBlock value={duration.parts.days} label="DAYS" />
+            <TimeBlock value={duration.parts.hours} label="HRS" />
+          </>
+        ) : (
+          <>
+            <TimeBlock value={duration.parts.months ?? 0} label="MONTHS" />
+            <TimeBlock value={duration.parts.days ?? 0} label="DAYS" />
+            <TimeBlock value={duration.parts.hours} label="HRS" />
+          </>
+        )}
       </View>
     </View>
   );

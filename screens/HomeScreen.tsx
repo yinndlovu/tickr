@@ -12,12 +12,14 @@ import { Ionicons } from "@expo/vector-icons";
 
 // internal
 import { useTheme } from "../context/ThemeContext";
+import { usePreferences } from "../context/PreferencesContext";
 import { AppText } from "../components/AppText";
 
 // contents
 import HabitPickerModal from "../components/HabitPickerModal";
 import CountdownHero from "../components/CountdownHero";
 import { Habit } from "../types/habit";
+import { formatHabitDuration } from "../services/timeDisplay";
 
 // mock data
 const MOCK_HABITS: Habit[] = [
@@ -30,6 +32,7 @@ const HomeScreen: React.FC = () => {
   const navigation = useNavigation<any>();
   const { theme, toggleTheme } = useTheme();
   const insets = useSafeAreaInsets();
+  const { timeDisplayMode } = usePreferences();
 
   // use states
   const [isModalVisible, setModalVisible] = useState(false);
@@ -63,16 +66,32 @@ const HomeScreen: React.FC = () => {
               >
                 Progress
               </AppText>
-              <TouchableOpacity
-                onPress={() => navigation.navigate("Settings")}
-                style={styles.iconButton}
-              >
-                <Ionicons
-                  name="settings-outline"
-                  size={24}
-                  color={theme.text}
-                />
-              </TouchableOpacity>
+              <View style={styles.headerActions}>
+                <TouchableOpacity
+                  onPress={() => {}}
+                  style={styles.iconButton}
+                  accessibilityRole="button"
+                  accessibilityLabel="Profile"
+                >
+                  <Ionicons
+                    name="person-outline"
+                    size={24}
+                    color={theme.text}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("Settings")}
+                  style={styles.iconButton}
+                  accessibilityRole="button"
+                  accessibilityLabel="Settings"
+                >
+                  <Ionicons
+                    name="settings-outline"
+                    size={24}
+                    color={theme.text}
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
 
             <CountdownHero
@@ -106,7 +125,7 @@ const HomeScreen: React.FC = () => {
                 variant="light"
                 style={[styles.cardDate, { color: theme.subtext }]}
               >
-                Started: {new Date(item.startDate).toLocaleDateString()}
+                {formatHabitDuration(item.startDate, timeDisplayMode).text}
               </AppText>
             </View>
           </View>
@@ -142,6 +161,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     marginBottom: 20,
+  },
+  headerActions: {
+    flexDirection: "row",
+    alignItems: "center",
   },
   title: {
     fontSize: 28,

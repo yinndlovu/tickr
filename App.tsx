@@ -1,12 +1,30 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+
+// contexts
+import { ThemeProvider, useTheme } from "./context/ThemeContext";
+
+// screens
+import HomeScreen from "./screens/HomeScreen";
+
+const AppContent = () => {
+  const { isDark } = useTheme();
+  return (
+    <>
+      <HomeScreen />
+      <StatusBar style={isDark ? "light" : "dark"} />
+    </>
+  );
+};
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaProvider>
+      <ThemeProvider>
+        <AppContent />
+      </ThemeProvider>
+    </SafeAreaProvider>
   );
 }
 

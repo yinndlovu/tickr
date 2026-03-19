@@ -1,11 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import * as WebBrowser from "expo-web-browser";
+import * as Google from "expo-auth-session/providers/google";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
+// internal
 import { useTheme } from "../context/ThemeContext";
 import { AppText } from "../components/AppText";
+import { signInWithGoogle } from "../services/authService";
+
+WebBrowser.maybeCompleteAuthSession();
 
 const SignInScreen: React.FC = () => {
   const { theme } = useTheme();
@@ -15,6 +22,33 @@ const SignInScreen: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    androidClientId: process.env.GOOGLE_ANDROID_CLIENT_ID,
+    iosClientId: process.env.GOOGLE_IOS_CLIENT_ID,
+    webClientId: process.env.GOOGLE_WEB_CLIENT_ID,
+  });
+
+  useEffect(() => {
+    const handleGoogleResponse = async () => {
+      if (response?.type !== "success") return;
+      const idToken = response.authentication?.idToken;
+      if (!idToken) {
+        console.warn("No ID token received");
+        return;
+      }
+
+      try {
+        const data = await signInWithGoogle(idToken);
+        await AsyncStorage.setItem("token", data.token);
+        navigation.goBack();
+      } catch (e) {
+        console.warn("Google sign-in error", e);
+      }
+    };
+
+    handleGoogleResponse();
+  }, [response, navigation]);
 
   return (
     <View
@@ -48,7 +82,7 @@ const SignInScreen: React.FC = () => {
         </AppText>
 
         <TouchableOpacity
-          onPress={() => {}}
+          onPress={() => promptAsync()}
           style={[
             styles.socialButton,
             { borderColor: theme.accent, backgroundColor: theme.card },

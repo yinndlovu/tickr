@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { Habit } from "../types/habit";
 import { useTheme } from "../context/ThemeContext";
 import { AppText } from "./AppText";
 import { usePreferences } from "../context/PreferencesContext";
-import { formatHabitDuration } from "../services/timeDisplay";
+import { formatHabitDuration } from "../utils/timeDisplay";
 
 interface Props {
   habit: Habit;

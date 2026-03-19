@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   StyleSheet,
-  Text,
   View,
   FlatList,
   TouchableOpacity,
@@ -20,7 +19,7 @@ import { AppText } from "../components/AppText";
 import HabitPickerModal from "../components/HabitPickerModal";
 import CountdownHero from "../components/CountdownHero";
 import NewHabitModal from "../components/NewHabitModal";
-import { formatHabitDuration } from "../services/timeDisplay";
+import { formatHabitDuration } from "../utils/timeDisplay";
 
 const HomeScreen: React.FC = () => {
   const navigation = useNavigation<any>();

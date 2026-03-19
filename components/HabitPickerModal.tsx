@@ -2,7 +2,6 @@ import React from "react";
 import {
   Modal,
   View,
-  Text,
   StyleSheet,
   TouchableOpacity,
   Pressable,
@@ -62,16 +61,19 @@ const HabitPickerModal: React.FC<Props> = ({
                     onClose();
                   }}
                 >
-                  <Text
+                  <AppText
+                    variant="medium"
                     style={[
                       styles.itemText,
                       { color: isSelected ? theme.primary : theme.text },
                     ]}
                   >
                     {item.name}
-                  </Text>
+                  </AppText>
                   {isSelected && (
-                    <Text style={{ color: theme.primary }}>✓</Text>
+                    <AppText variant="medium" style={{ color: theme.primary }}>
+                      ✓
+                    </AppText>
                   )}
                 </TouchableOpacity>
               );
@@ -118,7 +120,6 @@ const styles = StyleSheet.create({
   },
   itemText: {
     fontSize: 16,
-    fontWeight: "500",
   },
 });
 

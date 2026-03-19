@@ -8,6 +8,9 @@ import {
   Pressable,
   FlatList,
 } from "react-native";
+
+// internal
+import { AppText } from "./AppText";
 import { useTheme } from "../context/ThemeContext";
 import { Habit } from "../types/habit";
 
@@ -39,9 +42,9 @@ const HabitPickerModal: React.FC<Props> = ({
         <View style={[styles.sheet, { backgroundColor: theme.card }]}>
           <View style={[styles.handle, { backgroundColor: theme.accent }]} />
 
-          <Text style={[styles.title, { color: theme.text }]}>
+          <AppText variant="bold" style={[styles.title, { color: theme.text }]}>
             Switch Main Tracker
-          </Text>
+          </AppText>
 
           <FlatList
             data={habits}
@@ -102,7 +105,6 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
-    fontWeight: "bold",
     marginBottom: 20,
     textAlign: "center",
   },

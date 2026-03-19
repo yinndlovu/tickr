@@ -31,6 +31,9 @@
         "projectId": "17f4b500-1a6c-4952-9f15-0ec32bbcb72c"
       }
     },
-    "owner": "yinn"
+    "owner": "yinn",
+    "plugins": [
+      "expo-font"
+    ]
   }
 }

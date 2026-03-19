@@ -5,12 +5,12 @@ import {
   View,
   FlatList,
   TouchableOpacity,
-  Alert,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 // internal
 import { useTheme } from "../context/ThemeContext";
+import { AppText } from "../components/AppText";
 
 // contents
 import HabitPickerModal from "../components/HabitPickerModal";
@@ -28,6 +28,7 @@ const HomeScreen: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
   const insets = useSafeAreaInsets();
 
+  // use states
   const [isModalVisible, setModalVisible] = useState(false);
   const [mainHabitId, setMainHabitId] = useState<string>("1");
 
@@ -53,9 +54,12 @@ const HomeScreen: React.FC = () => {
         ListHeaderComponent={
           <View style={styles.header}>
             <View style={styles.topRow}>
-              <Text style={[styles.title, { color: theme.text }]}>
+              <AppText
+                variant="bold"
+                style={[styles.title, { color: theme.text }]}
+              >
                 Progress
-              </Text>
+              </AppText>
               <TouchableOpacity
                 onPress={toggleTheme}
                 style={styles.themeToggle}
@@ -71,9 +75,12 @@ const HomeScreen: React.FC = () => {
               onOpenPicker={() => setModalVisible(true)}
             />
 
-            <Text style={[styles.sectionLabel, { color: theme.subtext }]}>
+            <AppText
+              variant="medium"
+              style={[styles.sectionLabel, { color: theme.subtext }]}
+            >
               OTHER TRACKERS
-            </Text>
+            </AppText>
           </View>
         }
         renderItem={({ item }) => (
@@ -84,12 +91,18 @@ const HomeScreen: React.FC = () => {
             ]}
           >
             <View>
-              <Text style={[styles.cardTitle, { color: theme.text }]}>
+              <AppText
+                variant="bold"
+                style={[styles.cardTitle, { color: theme.text }]}
+              >
                 {item.name}
-              </Text>
-              <Text style={[styles.cardDate, { color: theme.subtext }]}>
+              </AppText>
+              <AppText
+                variant="light"
+                style={[styles.cardDate, { color: theme.subtext }]}
+              >
                 Started: {new Date(item.startDate).toLocaleDateString()}
-              </Text>
+              </AppText>
             </View>
           </View>
         )}
@@ -127,7 +140,6 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 28,
-    fontWeight: "800",
   },
   themeToggle: {
     padding: 8,
@@ -135,7 +147,6 @@ const styles = StyleSheet.create({
   sectionLabel: {
     alignSelf: "flex-start",
     fontSize: 12,
-    fontWeight: "bold",
     marginTop: 30,
     marginBottom: 10,
   },
@@ -148,7 +159,6 @@ const styles = StyleSheet.create({
   },
   cardTitle: {
     fontSize: 17,
-    fontWeight: "600",
   },
   cardDate: {
     fontSize: 13,

@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { intervalToDuration } from "date-fns";
 import { Habit } from "../types/habit";
 import { useTheme } from "../context/ThemeContext";
+import { AppText } from "./AppText";
 
 interface Props {
   habit: Habit;
@@ -28,7 +29,9 @@ const CountdownHero: React.FC<Props> = ({ habit, onOpenPicker }) => {
   return (
     <View style={[styles.container, { backgroundColor: theme.primary }]}>
       <TouchableOpacity style={styles.dropdown} onPress={onOpenPicker}>
-        <Text style={styles.habitTitle}>{habit.name} ▾</Text>
+        <AppText variant="medium" style={styles.habitTitle}>
+          {habit.name} ▾
+        </AppText>
       </TouchableOpacity>
 
       <View style={styles.row}>
@@ -41,8 +44,12 @@ const CountdownHero: React.FC<Props> = ({ habit, onOpenPicker }) => {
 
 const TimeBlock = ({ value, label }: { value: number; label: string }) => (
   <View style={{ alignItems: "center" }}>
-    <Text style={styles.timeNum}>{value}</Text>
-    <Text style={styles.timeLabel}>{label}</Text>
+    <AppText variant="bold" style={styles.timeNum}>
+      {value}
+    </AppText>
+    <AppText variant="light" style={styles.timeLabel}>
+      {label}
+    </AppText>
   </View>
 );
 
@@ -60,13 +67,21 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginBottom: 15,
   },
-  habitTitle: { color: "white", fontWeight: "bold", fontSize: 18 },
-  row: { flexDirection: "row", gap: 25 },
-  timeNum: { color: "white", fontSize: 52, fontWeight: "800" },
+  habitTitle: {
+    color: "white",
+    fontSize: 18,
+  },
+  row: {
+    flexDirection: "row",
+    gap: 25,
+  },
+  timeNum: {
+    color: "white",
+    fontSize: 52,
+  },
   timeLabel: {
     color: "rgba(255,255,255,0.7)",
     fontSize: 12,
-    fontWeight: "bold",
   },
 });
 

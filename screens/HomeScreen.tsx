@@ -13,34 +13,28 @@ import { Ionicons } from "@expo/vector-icons";
 // internal
 import { useTheme } from "../context/ThemeContext";
 import { usePreferences } from "../context/PreferencesContext";
+import { useHabits } from "../context/HabitsContext";
 import { AppText } from "../components/AppText";
 
 // contents
 import HabitPickerModal from "../components/HabitPickerModal";
 import CountdownHero from "../components/CountdownHero";
-import { Habit } from "../types/habit";
+import NewHabitModal from "../components/NewHabitModal";
 import { formatHabitDuration } from "../services/timeDisplay";
-
-// mock data
-const MOCK_HABITS: Habit[] = [
-  { id: "1", name: "Sobriety", startDate: "2023-05-12T08:00:00" },
-  { id: "2", name: "No Caffeine", startDate: "2024-01-20T06:30:00" },
-  { id: "3", name: "Social Media Fast", startDate: "2024-03-01T22:00:00" },
-];
 
 const HomeScreen: React.FC = () => {
   const navigation = useNavigation<any>();
   const { theme, toggleTheme } = useTheme();
   const insets = useSafeAreaInsets();
   const { timeDisplayMode } = usePreferences();
+  const { habits, mainHabitId, setMainHabitId, addHabit } = useHabits();
 
   // use states
   const [isModalVisible, setModalVisible] = useState(false);
-  const [mainHabitId, setMainHabitId] = useState<string>("1");
+  const [isNewHabitModalVisible, setIsNewHabitModalVisible] = useState(false);
 
-  const mainHabit =
-    MOCK_HABITS.find((h) => h.id === mainHabitId) || MOCK_HABITS[0];
-  const otherHabits = MOCK_HABITS.filter((h) => h.id !== mainHabitId);
+  const mainHabit = habits.find((h) => h.id === mainHabitId) || habits[0];
+  const otherHabits = habits.filter((h) => h.id !== mainHabitId);
 
   return (
     <View
@@ -56,7 +50,10 @@ const HomeScreen: React.FC = () => {
       <FlatList
         data={otherHabits}
         keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.scrollContent}
+        contentContainerStyle={[
+          styles.scrollContent,
+          habits.length === 0 && { flexGrow: 1 },
+        ]}
         ListHeaderComponent={
           <View style={styles.header}>
             <View style={styles.topRow}>
@@ -94,17 +91,59 @@ const HomeScreen: React.FC = () => {
               </View>
             </View>
 
-            <CountdownHero
-              habit={mainHabit}
-              onOpenPicker={() => setModalVisible(true)}
-            />
+            {habits.length > 0 && mainHabit ? (
+              <CountdownHero
+                habit={mainHabit}
+                onOpenPicker={() => setModalVisible(true)}
+              />
+            ) : (
+              <View
+                style={[
+                  styles.emptyHero,
+                  { backgroundColor: theme.card, borderColor: theme.accent },
+                ]}
+              >
+                <AppText variant="bold" style={{ color: theme.text, fontSize: 18 }}>
+                  Start tracking something
+                </AppText>
+                <AppText
+                  variant="light"
+                  style={{ color: theme.subtext, marginTop: 6, textAlign: "center" }}
+                >
+                  Add your first tracker to see your progress here.
+                </AppText>
+                <TouchableOpacity
+                  onPress={() => setIsNewHabitModalVisible(true)}
+                  style={[styles.emptyCta, { backgroundColor: theme.primary }]}
+                  accessibilityRole="button"
+                  accessibilityLabel="Add your first tracker"
+                >
+                  <Ionicons name="add" size={18} color="white" />
+                  <AppText variant="bold" style={{ color: "white" }}>
+                    Add tracker
+                  </AppText>
+                </TouchableOpacity>
+              </View>
+            )}
 
-            <AppText
-              variant="medium"
-              style={[styles.sectionLabel, { color: theme.subtext }]}
-            >
-              OTHER TRACKERS
-            </AppText>
+            {habits.length > 0 ? (
+              <View style={styles.sectionRow}>
+                <AppText
+                  variant="medium"
+                  style={[styles.sectionLabel, { color: theme.subtext }]}
+                >
+                  OTHER TRACKERS
+                </AppText>
+                <TouchableOpacity
+                  onPress={() => setIsNewHabitModalVisible(true)}
+                  style={styles.addButton}
+                  accessibilityRole="button"
+                  accessibilityLabel="Add tracker"
+                >
+                  <Ionicons name="add-circle-outline" size={22} color={theme.subtext} />
+                </TouchableOpacity>
+              </View>
+            ) : null}
           </View>
         }
         renderItem={({ item }) => (
@@ -134,10 +173,16 @@ const HomeScreen: React.FC = () => {
 
       <HabitPickerModal
         isVisible={isModalVisible}
-        habits={MOCK_HABITS}
+        habits={habits}
         currentHabitId={mainHabitId}
         onClose={() => setModalVisible(false)}
         onSelect={(id) => setMainHabitId(id)}
+      />
+
+      <NewHabitModal
+        isVisible={isNewHabitModalVisible}
+        onClose={() => setIsNewHabitModalVisible(false)}
+        onCreate={addHabit}
       />
     </View>
   );
@@ -179,10 +224,40 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   sectionLabel: {
-    alignSelf: "flex-start",
     fontSize: 12,
     marginTop: 30,
     marginBottom: 10,
+  },
+  sectionRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "100%",
+    marginTop: 30,
+    marginBottom: 10,
+  },
+  addButton: {
+    width: 40,
+    height: 40,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  emptyHero: {
+    width: "92%",
+    borderRadius: 25,
+    borderWidth: 1,
+    paddingVertical: 26,
+    paddingHorizontal: 18,
+    alignItems: "center",
+  },
+  emptyCta: {
+    marginTop: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    borderRadius: 14,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
   },
   card: {
     marginHorizontal: 20,

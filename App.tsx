@@ -10,6 +10,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 // contexts
 import { ThemeProvider, useTheme } from "./context/ThemeContext";
 import { PreferencesProvider } from "./context/PreferencesContext";
+import { HabitsProvider } from "./context/HabitsContext";
 
 // screens
 import HomeScreen from "./screens/HomeScreen";
@@ -59,7 +60,9 @@ export default function App() {
       <SafeAreaProvider>
         <ThemeProvider>
           <PreferencesProvider>
-            <AppContent />
+            <HabitsProvider>
+              <AppContent />
+            </HabitsProvider>
           </PreferencesProvider>
         </ThemeProvider>
       </SafeAreaProvider>

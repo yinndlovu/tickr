@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useNavigation } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
 
 // internal
 import { useTheme } from "../context/ThemeContext";
@@ -25,6 +27,7 @@ const MOCK_HABITS: Habit[] = [
 ];
 
 const HomeScreen: React.FC = () => {
+  const navigation = useNavigation<any>();
   const { theme, toggleTheme } = useTheme();
   const insets = useSafeAreaInsets();
 
@@ -61,12 +64,14 @@ const HomeScreen: React.FC = () => {
                 Progress
               </AppText>
               <TouchableOpacity
-                onPress={toggleTheme}
-                style={styles.themeToggle}
+                onPress={() => navigation.navigate("Settings")}
+                style={styles.iconButton}
               >
-                <Text style={{ fontSize: 20 }}>
-                  {theme.background === "#F8FAFC" ? "🌙" : "☀️"}
-                </Text>
+                <Ionicons
+                  name="settings-outline"
+                  size={24}
+                  color={theme.text}
+                />
               </TouchableOpacity>
             </View>
 
@@ -140,6 +145,12 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 28,
+  },
+  iconButton: {
+    width: 56,
+    height: 56,
+    justifyContent: "center",
+    alignItems: "center",
   },
   themeToggle: {
     padding: 8,

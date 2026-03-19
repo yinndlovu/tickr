@@ -1,10 +1,5 @@
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  View,
-  FlatList,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, View, FlatList, TouchableOpacity } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
@@ -19,6 +14,7 @@ import { AppText } from "../components/AppText";
 import HabitPickerModal from "../components/HabitPickerModal";
 import CountdownHero from "../components/CountdownHero";
 import NewHabitModal from "../components/NewHabitModal";
+import ProfileModal from "../components/ProfileModal";
 import { formatHabitDuration } from "../utils/timeDisplay";
 
 const HomeScreen: React.FC = () => {
@@ -31,6 +27,7 @@ const HomeScreen: React.FC = () => {
   // use states
   const [isModalVisible, setModalVisible] = useState(false);
   const [isNewHabitModalVisible, setIsNewHabitModalVisible] = useState(false);
+  const [isProfileModalVisible, setIsProfileModalVisible] = useState(false);
 
   const mainHabit = habits.find((h) => h.id === mainHabitId) || habits[0];
   const otherHabits = habits.filter((h) => h.id !== mainHabitId);
@@ -64,7 +61,7 @@ const HomeScreen: React.FC = () => {
               </AppText>
               <View style={styles.headerActions}>
                 <TouchableOpacity
-                  onPress={() => {}}
+                  onPress={() => setIsProfileModalVisible(true)}
                   style={styles.iconButton}
                   accessibilityRole="button"
                   accessibilityLabel="Profile"
@@ -102,12 +99,19 @@ const HomeScreen: React.FC = () => {
                   { backgroundColor: theme.card, borderColor: theme.accent },
                 ]}
               >
-                <AppText variant="bold" style={{ color: theme.text, fontSize: 18 }}>
+                <AppText
+                  variant="bold"
+                  style={{ color: theme.text, fontSize: 18 }}
+                >
                   Start tracking something
                 </AppText>
                 <AppText
                   variant="light"
-                  style={{ color: theme.subtext, marginTop: 6, textAlign: "center" }}
+                  style={{
+                    color: theme.subtext,
+                    marginTop: 6,
+                    textAlign: "center",
+                  }}
                 >
                   Add your first tracker to see your progress here.
                 </AppText>
@@ -139,7 +143,11 @@ const HomeScreen: React.FC = () => {
                   accessibilityRole="button"
                   accessibilityLabel="Add tracker"
                 >
-                  <Ionicons name="add-circle-outline" size={22} color={theme.subtext} />
+                  <Ionicons
+                    name="add-circle-outline"
+                    size={22}
+                    color={theme.subtext}
+                  />
                 </TouchableOpacity>
               </View>
             ) : null}
@@ -182,6 +190,15 @@ const HomeScreen: React.FC = () => {
         isVisible={isNewHabitModalVisible}
         onClose={() => setIsNewHabitModalVisible(false)}
         onCreate={addHabit}
+      />
+
+      <ProfileModal
+        isVisible={isProfileModalVisible}
+        onClose={() => setIsProfileModalVisible(false)}
+        onSignIn={() => {
+          setIsProfileModalVisible(false);
+          navigation.navigate("SignIn");
+        }}
       />
     </View>
   );

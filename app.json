@@ -21,7 +21,8 @@
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.yinn.tickr"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -33,7 +34,8 @@
     },
     "owner": "yinn",
     "plugins": [
-      "expo-font"
+      "expo-font",
+      "expo-web-browser"
     ]
   }
 }

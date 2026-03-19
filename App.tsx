@@ -15,6 +15,8 @@ import { HabitsProvider } from "./context/HabitsContext";
 // screens
 import HomeScreen from "./screens/HomeScreen";
 import SettingsScreen from "./screens/SettingsScreen";
+import SignInScreen from "./screens/SignInScreen";
+import SignUpScreen from "./screens/SignUpScreen";
 
 SplashScreen.preventAutoHideAsync();
 const Stack = createStackNavigator();
@@ -28,6 +30,8 @@ const AppContent = () => {
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Settings" component={SettingsScreen} />
+          <Stack.Screen name="SignIn" component={SignInScreen} />
+          <Stack.Screen name="SignUp" component={SignUpScreen} />
         </Stack.Navigator>
       </NavigationContainer>
 

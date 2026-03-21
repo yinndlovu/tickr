@@ -10,7 +10,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 // internal
 import { useTheme } from "../context/ThemeContext";
 import { AppText } from "../components/AppText";
-import { signInWithGoogle } from "../services/authService";
+import { authenticateWithGoogle } from "../services/authService";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -39,7 +39,7 @@ const SignInScreen: React.FC = () => {
       }
 
       try {
-        const data = await signInWithGoogle(idToken);
+        const data = await authenticateWithGoogle(idToken);
         await AsyncStorage.setItem("token", data.token);
         navigation.goBack();
       } catch (e) {
@@ -83,6 +83,7 @@ const SignInScreen: React.FC = () => {
 
         <TouchableOpacity
           onPress={() => promptAsync()}
+          disabled={!request}
           style={[
             styles.socialButton,
             { borderColor: theme.accent, backgroundColor: theme.card },

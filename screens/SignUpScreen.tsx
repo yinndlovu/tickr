@@ -10,6 +10,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTheme } from "../context/ThemeContext";
 import { AppText } from "../components/AppText";
 import { authenticateWithGoogle } from "../services/authService";
+import { GOOGLE_ANDROID_CLIENT_ID } from "../configuration/config";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -24,7 +25,7 @@ const SignUpScreen: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const [request, response, promptAsync] = Google.useAuthRequest({
-    androidClientId: process.env.GOOGLE_ANDROID_CLIENT_ID,
+    androidClientId: GOOGLE_ANDROID_CLIENT_ID,
     iosClientId: process.env.GOOGLE_IOS_CLIENT_ID,
     webClientId: process.env.GOOGLE_WEB_CLIENT_ID,
   });

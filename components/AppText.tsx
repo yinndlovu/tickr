@@ -1,6 +1,8 @@
+// external
 import React from "react";
 import { Text, TextProps } from "react-native";
 
+// types
 type FontVariant = "bold" | "medium" | "regular" | "italic" | "light";
 
 interface AppTextProps extends TextProps {

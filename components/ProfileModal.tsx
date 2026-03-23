@@ -1,3 +1,4 @@
+// external
 import React from "react";
 import {
   Modal,
@@ -8,6 +9,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
+// internal
 import { useTheme } from "../context/ThemeContext";
 import { AppText } from "./AppText";
 
@@ -57,7 +59,7 @@ const ProfileModal: React.FC<Props> = ({ isVisible, onClose, onSignIn }) => {
             style={{ color: theme.subtext, marginTop: 6, lineHeight: 18 }}
           >
             Sign in to back up your trackers and access them on any device.
-            Tickr is offline-first — your data stays on this device unless you
+            Tickr is offline-first, so your data stays on this device unless you
             choose to sync.
           </AppText>
 

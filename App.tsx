@@ -22,12 +22,17 @@ SplashScreen.preventAutoHideAsync();
 const Stack = createStackNavigator();
 
 const AppContent = () => {
-  const { isDark } = useTheme();
+  const { isDark, theme } = useTheme();
 
   return (
     <>
       <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+            cardStyle: { backgroundColor: theme.background },
+          }}
+        >
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Settings" component={SettingsScreen} />
           <Stack.Screen name="SignIn" component={SignInScreen} />
@@ -41,6 +46,8 @@ const AppContent = () => {
 };
 
 export default function App() {
+  const { theme } = useTheme();
+
   const [fontsLoaded, fontError] = useFonts({
     "App-Bold": require("./assets/fonts/Inter-Bold.ttf"),
     "App-Regular": require("./assets/fonts/Inter-Regular.ttf"),
@@ -60,7 +67,10 @@ export default function App() {
   }
 
   return (
-    <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+    <View
+      style={{ flex: 1, backgroundColor: theme.background }}
+      onLayout={onLayoutRootView}
+    >
       <SafeAreaProvider>
         <ThemeProvider>
           <PreferencesProvider>

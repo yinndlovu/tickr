@@ -25,12 +25,37 @@ export function formatHabitDuration(
   const d = intervalToDuration({ start, end: now });
   const years = d.years || 0;
   const monthsRemainder = d.months || 0;
-  const months = years * 12 + monthsRemainder;
   const days = d.days || 0;
   const hours = d.hours || 0;
 
+  if (mode === "months_days_hours") {
+    const monthsTotal = years * 12 + monthsRemainder;
+
+    const textParts: string[] = [];
+    if (monthsTotal > 0) textParts.push(`${monthsTotal} months`);
+    textParts.push(`${days} days`);
+    textParts.push(`${hours} hrs`);
+
+    return {
+      text: textParts.join(" "),
+      parts: { months: monthsTotal, days, hours },
+    };
+  }
+
+  const textParts: string[] = [];
+  if (years > 0) {
+    textParts.push(`${years} year${years === 1 ? "" : "s"}`);
+  }
+  if (monthsRemainder > 0) {
+    textParts.push(
+      `${monthsRemainder} month${monthsRemainder === 1 ? "" : "s"}`,
+    );
+  }
+  textParts.push(`${days} days`);
+  textParts.push(`${hours} hrs`);
+
   return {
-    text: `${months} months ${days} days ${hours} hrs`,
-    parts: { months, days, hours },
+    text: textParts.join(" "),
+    parts: { years, months: monthsRemainder, days, hours },
   };
 }

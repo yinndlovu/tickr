@@ -1,7 +1,11 @@
+// external
 import React, { createContext, useContext, useState, ReactNode } from "react";
 import { useColorScheme } from "react-native";
+
+// internal
 import { LightTheme, DarkTheme, Theme } from "../constants/Colors";
 
+// types
 type ThemeContextType = {
   theme: Theme;
   isDark: boolean;
@@ -26,6 +30,8 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
 
 export const useTheme = () => {
   const context = useContext(ThemeContext);
-  if (!context) throw new Error("useTheme must be used within ThemeProvider");
+  if (!context) {
+    throw new Error("useTheme must be used within ThemeProvider");
+  }
   return context;
 };

@@ -38,11 +38,24 @@ const CountdownHero: React.FC<Props> = ({ habit, onOpenPicker }) => {
             <TimeBlock value={duration.parts.days} label="DAYS" />
             <TimeBlock value={duration.parts.hours} label="HRS" />
           </>
+        ) : timeDisplayMode === "months_days_hours" ? (
+          <>
+            {(duration.parts.months ?? 0) > 0 ? (
+              <TimeBlock value={duration.parts.months ?? 0} label="MONTHS" />
+            ) : null}
+            <TimeBlock value={duration.parts.days ?? 0} label="DAYS" />
+            <TimeBlock value={duration.parts.hours ?? 0} label="HRS" />
+          </>
         ) : (
           <>
-            <TimeBlock value={duration.parts.months ?? 0} label="MONTHS" />
+            {(duration.parts.years ?? 0) > 0 ? (
+              <TimeBlock value={duration.parts.years ?? 0} label="YEARS" />
+            ) : null}
+            {(duration.parts.months ?? 0) > 0 ? (
+              <TimeBlock value={duration.parts.months ?? 0} label="MONTHS" />
+            ) : null}
             <TimeBlock value={duration.parts.days ?? 0} label="DAYS" />
-            <TimeBlock value={duration.parts.hours} label="HRS" />
+            <TimeBlock value={duration.parts.hours ?? 0} label="HRS" />
           </>
         )}
       </View>

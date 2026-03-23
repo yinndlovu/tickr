@@ -133,7 +133,10 @@ const HomeScreen: React.FC = () => {
               <View style={styles.sectionRow}>
                 <AppText
                   variant="medium"
-                  style={[styles.sectionLabel, { color: theme.subtext }]}
+                  style={[
+                    styles.sectionRowLabel,
+                    { color: theme.subtext },
+                  ]}
                 >
                   OTHER TRACKERS
                 </AppText>
@@ -239,10 +242,8 @@ const styles = StyleSheet.create({
   themeToggle: {
     padding: 8,
   },
-  sectionLabel: {
+  sectionRowLabel: {
     fontSize: 12,
-    marginTop: 30,
-    marginBottom: 10,
   },
   sectionRow: {
     flexDirection: "row",

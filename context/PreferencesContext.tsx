@@ -1,3 +1,4 @@
+// external
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, {
   createContext,
@@ -7,7 +8,12 @@ import React, {
   useState,
 } from "react";
 
-export type TimeDisplayMode = "days_hours" | "months_days_hours";
+// internal
+// types
+export type TimeDisplayMode =
+  | "days_hours"
+  | "months_days_hours"
+  | "years_months_days_hours";
 
 type PreferencesContextType = {
   timeDisplayMode: TimeDisplayMode;
@@ -33,12 +39,20 @@ export const PreferencesProvider = ({ children }: { children: ReactNode }) => {
     (async () => {
       try {
         const stored = await AsyncStorage.getItem(STORAGE_KEYS.timeDisplayMode);
-        if (!isMounted) return;
-        if (stored === "days_hours" || stored === "months_days_hours") {
+        if (!isMounted) {
+          return;
+        }
+        if (
+          stored === "days_hours" ||
+          stored === "months_days_hours" ||
+          stored === "years_months_days_hours"
+        ) {
           setTimeDisplayModeState(stored);
         }
       } finally {
-        if (isMounted) setIsPreferencesLoaded(true);
+        if (isMounted) {
+          setIsPreferencesLoaded(true);
+        }
       }
     })();
 

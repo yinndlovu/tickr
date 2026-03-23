@@ -1,3 +1,4 @@
+// external
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, {
   createContext,
@@ -7,8 +8,11 @@ import React, {
   useMemo,
   useState,
 } from "react";
+
+// internal
 import { Habit } from "../types/habit";
 
+// types
 type HabitsContextType = {
   habits: Habit[];
   mainHabitId: string;
@@ -17,6 +21,7 @@ type HabitsContextType = {
   isHabitsLoaded: boolean;
 };
 
+// constants
 const STORAGE_KEYS = {
   habits: "habits.items",
   mainHabitId: "habits.mainHabitId",
@@ -38,12 +43,13 @@ export const HabitsProvider = ({ children }: { children: ReactNode }) => {
           AsyncStorage.getItem(STORAGE_KEYS.mainHabitId),
         ]);
 
-        if (!isMounted) return;
+        if (!isMounted) {
+          return;
+        }
 
         if (storedHabitsJson) {
           const parsed = JSON.parse(storedHabitsJson) as unknown;
           if (Array.isArray(parsed)) {
-            // Minimal runtime validation
             const cleaned = parsed
               .filter((h) => h && typeof h === "object")
               .map((h: any) => ({
@@ -68,7 +74,9 @@ export const HabitsProvider = ({ children }: { children: ReactNode }) => {
           setMainHabitIdState("");
         }
       } finally {
-        if (isMounted) setIsHabitsLoaded(true);
+        if (isMounted) {
+          setIsHabitsLoaded(true);
+        }
       }
     })();
 
@@ -79,7 +87,9 @@ export const HabitsProvider = ({ children }: { children: ReactNode }) => {
 
   // Keep mainHabitId valid when habits change.
   useEffect(() => {
-    if (!isHabitsLoaded) return;
+    if (!isHabitsLoaded) {
+      return;
+    }
     if (habits.length === 0) {
       if (mainHabitId) setMainHabitIdState("");
       return;
@@ -91,14 +101,18 @@ export const HabitsProvider = ({ children }: { children: ReactNode }) => {
 
   // Persist after initial load.
   useEffect(() => {
-    if (!isHabitsLoaded) return;
+    if (!isHabitsLoaded) {
+      return;
+    }
     AsyncStorage.setItem(STORAGE_KEYS.habits, JSON.stringify(habits)).catch(
       () => {},
     );
   }, [habits, isHabitsLoaded]);
 
   useEffect(() => {
-    if (!isHabitsLoaded) return;
+    if (!isHabitsLoaded) {
+      return;
+    }
     if (!mainHabitId) {
       AsyncStorage.removeItem(STORAGE_KEYS.mainHabitId).catch(() => {});
       return;
@@ -125,6 +139,8 @@ export const HabitsProvider = ({ children }: { children: ReactNode }) => {
 
 export const useHabits = () => {
   const context = useContext(HabitsContext);
-  if (!context) throw new Error("useHabits must be used within HabitsProvider");
+  if (!context) {
+    throw new Error("useHabits must be used within HabitsProvider");
+  }
   return context;
 };

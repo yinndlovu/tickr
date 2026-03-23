@@ -69,7 +69,9 @@ const SettingsScreen: React.FC = () => {
               backgroundColor: theme.card,
               borderColor: theme.accent,
               marginTop: 12,
+              flexDirection: "column",
               alignItems: "flex-start",
+              justifyContent: "flex-start",
             },
           ]}
         >
@@ -88,7 +90,7 @@ const SettingsScreen: React.FC = () => {
             </View>
           </View>
 
-          <View style={styles.choiceColumn}>
+          <View style={[styles.choiceColumn]}>
             <TouchableOpacity
               onPress={() => setTimeDisplayMode("days_hours")}
               style={[
@@ -135,6 +137,32 @@ const SettingsScreen: React.FC = () => {
                 2 months 5 days • 3 hrs
               </AppText>
             </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => setTimeDisplayMode("years_months_days_hours")}
+              style={[
+                styles.choice,
+                {
+                  borderColor: theme.accent,
+                  backgroundColor:
+                    timeDisplayMode === "years_months_days_hours"
+                      ? theme.primary + "20"
+                      : "transparent",
+                },
+              ]}
+            >
+              <AppText
+                variant="medium"
+                style={{
+                  color:
+                    timeDisplayMode === "years_months_days_hours"
+                      ? theme.primary
+                      : theme.text,
+                }}
+              >
+                1 year 2 months • 3 hrs
+              </AppText>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -179,7 +207,8 @@ const styles = StyleSheet.create({
   },
   choiceColumn: {
     gap: 10,
-    alignItems: "flex-end",
+    alignItems: "flex-start",
+    width: "100%",
   },
   choice: {
     borderWidth: 1,

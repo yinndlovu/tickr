@@ -3,6 +3,7 @@
     "name": "Tickr",
     "slug": "tickr",
     "version": "1.0.0",
+    "scheme": "tickr",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",

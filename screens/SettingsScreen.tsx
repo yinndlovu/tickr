@@ -90,7 +90,7 @@ const SettingsScreen: React.FC = () => {
             </View>
           </View>
 
-          <View style={[styles.choiceColumn]}>
+          <View style={[styles.choiceColumn, { marginTop: 12 }]}>
             <TouchableOpacity
               onPress={() => setTimeDisplayMode("days_hours")}
               style={[
@@ -108,7 +108,7 @@ const SettingsScreen: React.FC = () => {
                 variant="medium"
                 style={{ color: timeDisplayMode === "days_hours" ? theme.primary : theme.text }}
               >
-                67 days • 3 hrs
+                67 days 3 hrs
               </AppText>
             </TouchableOpacity>
 
@@ -134,7 +134,7 @@ const SettingsScreen: React.FC = () => {
                       : theme.text,
                 }}
               >
-                2 months 5 days • 3 hrs
+                18 months 5 days 3 hrs
               </AppText>
             </TouchableOpacity>
 
@@ -160,7 +160,7 @@ const SettingsScreen: React.FC = () => {
                       : theme.text,
                 }}
               >
-                1 year 2 months • 3 hrs
+                1 year 2 months 3 hrs
               </AppText>
             </TouchableOpacity>
           </View>

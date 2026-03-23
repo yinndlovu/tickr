@@ -1,11 +1,15 @@
+// external
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
+
+// internal
 import { Habit } from "../types/habit";
 import { useTheme } from "../context/ThemeContext";
 import { AppText } from "./AppText";
 import { usePreferences } from "../context/PreferencesContext";
 import { formatHabitDuration } from "../utils/timeDisplay";
 
+// types
 interface Props {
   habit: Habit;
   onOpenPicker: () => void;

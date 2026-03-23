@@ -2,12 +2,14 @@ import React, { useMemo, useState } from "react";
 import {
   Modal,
   Pressable,
+  Platform,
   StyleSheet,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 // internal
 import { useTheme } from "../context/ThemeContext";
@@ -25,6 +27,7 @@ const NewHabitModal: React.FC<Props> = ({ isVisible, onClose, onCreate }) => {
   const { theme } = useTheme();
   const [name, setName] = useState("");
   const [startDate, setStartDate] = useState("");
+  const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   const [notes, setNotes] = useState("");
   const [error, setError] = useState<string | null>(null);
 
@@ -36,9 +39,17 @@ const NewHabitModal: React.FC<Props> = ({ isVisible, onClose, onCreate }) => {
     return `${yyyy}-${mm}-${dd}`;
   }, []);
 
+  const formatYMD = (d: Date) => {
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, "0");
+    const dd = String(d.getDate()).padStart(2, "0");
+    return `${yyyy}-${mm}-${dd}`;
+  };
+
   const reset = () => {
     setName("");
     setStartDate("");
+    setIsDatePickerOpen(false);
     setNotes("");
     setError(null);
   };
@@ -127,20 +138,35 @@ const NewHabitModal: React.FC<Props> = ({ isVisible, onClose, onCreate }) => {
             >
               STARTED
             </AppText>
-            <TextInput
-              value={startDate}
-              onChangeText={(t) => {
-                setStartDate(t);
-                if (error) setError(null);
-              }}
-              placeholder={`YYYY-MM-DD (e.g. ${defaultHint})`}
-              placeholderTextColor={theme.subtext}
-              autoCapitalize="none"
-              style={[
-                styles.input,
-                { color: theme.text, borderColor: theme.accent },
-              ]}
-            />
+            <TouchableOpacity
+              onPress={() => setIsDatePickerOpen(true)}
+              activeOpacity={0.85}
+            >
+              <TextInput
+                value={startDate}
+                editable={false}
+                placeholder={`YYYY-MM-DD (e.g. ${defaultHint})`}
+                placeholderTextColor={theme.subtext}
+                autoCapitalize="none"
+                style={[
+                  styles.input,
+                  { color: theme.text, borderColor: theme.accent },
+                ]}
+              />
+            </TouchableOpacity>
+
+            {isDatePickerOpen ? (
+              <DateTimePicker
+                value={startDate ? new Date(startDate) : new Date()}
+                mode="date"
+                display={Platform.OS === "ios" ? "spinner" : "default"}
+                onValueChange={(event, date) => {
+                  setStartDate(formatYMD(date));
+                  if (error) setError(null);
+                }}
+                onDismiss={() => setIsDatePickerOpen(false)}
+              />
+            ) : null}
           </View>
 
           <View style={styles.field}>

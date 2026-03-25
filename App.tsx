@@ -46,13 +46,15 @@ const AppContent = () => {
   );
 };
 
+type NewType = {
+  onLayout: () => Promise<void> | void;
+  children: ReactNode;
+};
+
 const RootView = ({
   onLayout,
   children,
-}: {
-  onLayout: () => Promise<void> | void;
-  children: ReactNode;
-}) => {
+}: NewType) => {
   const { theme } = useTheme();
 
   return (

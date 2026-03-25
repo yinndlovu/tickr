@@ -1,8 +1,11 @@
+// external
 import {
   differenceInDays,
   differenceInHours,
   intervalToDuration,
 } from "date-fns";
+
+// internal
 import { TimeDisplayMode } from "../context/PreferencesContext";
 
 export function formatHabitDuration(

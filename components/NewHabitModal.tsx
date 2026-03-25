@@ -97,7 +97,7 @@ const NewHabitModal: React.FC<Props> = ({ isVisible, onClose, onCreate }) => {
         >
           <View style={styles.header}>
             <AppText variant="bold" style={{ color: theme.text, fontSize: 18 }}>
-              Add tracker
+              add habit
             </AppText>
             <TouchableOpacity
               onPress={handleClose}
@@ -114,7 +114,7 @@ const NewHabitModal: React.FC<Props> = ({ isVisible, onClose, onCreate }) => {
               variant="medium"
               style={{ color: theme.subtext, fontSize: 12 }}
             >
-              NAME
+              name
             </AppText>
             <TextInput
               value={name}
@@ -122,7 +122,7 @@ const NewHabitModal: React.FC<Props> = ({ isVisible, onClose, onCreate }) => {
                 setName(t);
                 if (error) setError(null);
               }}
-              placeholder="e.g. No caffeine"
+              placeholder="e.g. no caffeine"
               placeholderTextColor={theme.subtext}
               style={[
                 styles.input,
@@ -136,7 +136,7 @@ const NewHabitModal: React.FC<Props> = ({ isVisible, onClose, onCreate }) => {
               variant="medium"
               style={{ color: theme.subtext, fontSize: 12 }}
             >
-              STARTED
+              started
             </AppText>
             <TouchableOpacity
               onPress={() => setIsDatePickerOpen(true)}
@@ -145,7 +145,7 @@ const NewHabitModal: React.FC<Props> = ({ isVisible, onClose, onCreate }) => {
               <TextInput
                 value={startDate}
                 editable={false}
-                placeholder={`YYYY-MM-DD (e.g. ${defaultHint})`}
+                placeholder={`yyyy-mm-dd`}
                 placeholderTextColor={theme.subtext}
                 autoCapitalize="none"
                 style={[
@@ -174,12 +174,12 @@ const NewHabitModal: React.FC<Props> = ({ isVisible, onClose, onCreate }) => {
               variant="medium"
               style={{ color: theme.subtext, fontSize: 12 }}
             >
-              NOTES (OPTIONAL)
+              notes (optional)
             </AppText>
             <TextInput
               value={notes}
               onChangeText={setNotes}
-              placeholder="Anything you want to remember…"
+              placeholder="anything you want to remember…"
               placeholderTextColor={theme.subtext}
               multiline
               style={[
@@ -206,7 +206,7 @@ const NewHabitModal: React.FC<Props> = ({ isVisible, onClose, onCreate }) => {
             accessibilityLabel="Create tracker"
           >
             <AppText variant="bold" style={{ color: "white" }}>
-              Create
+              create
             </AppText>
           </TouchableOpacity>
         </Pressable>

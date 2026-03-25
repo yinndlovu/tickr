@@ -41,7 +41,7 @@ const ProfileModal: React.FC<Props> = ({ isVisible, onClose, onSignIn }) => {
                 variant="bold"
                 style={{ color: theme.text, fontSize: 18 }}
               >
-                Backup & sync
+                backup & sync
               </AppText>
             </View>
             <TouchableOpacity
@@ -58,7 +58,7 @@ const ProfileModal: React.FC<Props> = ({ isVisible, onClose, onSignIn }) => {
             variant="light"
             style={{ color: theme.subtext, marginTop: 6, lineHeight: 18 }}
           >
-            Sign in to back up your trackers and access them on any device.
+            sign in to back up your trackers and access them on any device.
             Tickr is offline-first, so your data stays on this device unless you
             choose to sync.
           </AppText>
@@ -71,7 +71,7 @@ const ProfileModal: React.FC<Props> = ({ isVisible, onClose, onSignIn }) => {
           >
             <Ionicons name="log-in-outline" size={18} color="white" />
             <AppText variant="bold" style={{ color: "white" }}>
-              Sign in
+              sign in
             </AppText>
           </TouchableOpacity>
 
@@ -82,7 +82,7 @@ const ProfileModal: React.FC<Props> = ({ isVisible, onClose, onSignIn }) => {
             accessibilityLabel="Not now"
           >
             <AppText variant="medium" style={{ color: theme.text }}>
-              Not now
+              not now
             </AppText>
           </TouchableOpacity>
         </Pressable>

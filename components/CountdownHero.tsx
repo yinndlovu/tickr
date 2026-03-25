@@ -39,27 +39,27 @@ const CountdownHero: React.FC<Props> = ({ habit, onOpenPicker }) => {
       <View style={styles.row}>
         {timeDisplayMode === "days_hours" ? (
           <>
-            <TimeBlock value={duration.parts.days} label="DAYS" />
-            <TimeBlock value={duration.parts.hours} label="HRS" />
+            <TimeBlock value={duration.parts.days} label="days" />
+            <TimeBlock value={duration.parts.hours} label="hrs" />
           </>
         ) : timeDisplayMode === "months_days_hours" ? (
           <>
             {(duration.parts.months ?? 0) > 0 ? (
-              <TimeBlock value={duration.parts.months ?? 0} label="MONTHS" />
+              <TimeBlock value={duration.parts.months ?? 0} label="months" />
             ) : null}
-            <TimeBlock value={duration.parts.days ?? 0} label="DAYS" />
-            <TimeBlock value={duration.parts.hours ?? 0} label="HRS" />
+            <TimeBlock value={duration.parts.days ?? 0} label="days" />
+            <TimeBlock value={duration.parts.hours ?? 0} label="hrs" />
           </>
         ) : (
           <>
             {(duration.parts.years ?? 0) > 0 ? (
-              <TimeBlock value={duration.parts.years ?? 0} label="YEARS" />
+              <TimeBlock value={duration.parts.years ?? 0} label="years" />
             ) : null}
             {(duration.parts.months ?? 0) > 0 ? (
-              <TimeBlock value={duration.parts.months ?? 0} label="MONTHS" />
+              <TimeBlock value={duration.parts.months ?? 0} label="months" />
             ) : null}
-            <TimeBlock value={duration.parts.days ?? 0} label="DAYS" />
-            <TimeBlock value={duration.parts.hours ?? 0} label="HRS" />
+            <TimeBlock value={duration.parts.days ?? 0} label="days" />
+            <TimeBlock value={duration.parts.hours ?? 0} label="hrs" />
           </>
         )}
       </View>

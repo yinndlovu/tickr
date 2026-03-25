@@ -30,7 +30,7 @@ const SettingsScreen: React.FC = () => {
           variant="bold"
           style={[styles.headerTitle, { color: theme.text }]}
         >
-          Settings
+          settings
         </AppText>
         <View style={{ width: 24 }} />
       </View>
@@ -52,7 +52,7 @@ const SettingsScreen: React.FC = () => {
               variant="medium"
               style={[styles.rowText, { color: theme.text }]}
             >
-              Dark Mode
+              dark mode
             </AppText>
           </View>
           <Switch
@@ -82,10 +82,10 @@ const SettingsScreen: React.FC = () => {
                 variant="medium"
                 style={[styles.rowText, { color: theme.text }]}
               >
-                Time display
+                time display
               </AppText>
               <AppText variant="light" style={{ color: theme.subtext, fontSize: 12 }}>
-                Choose how progress is shown
+                choose how progress is shown
               </AppText>
             </View>
           </View>
@@ -168,7 +168,7 @@ const SettingsScreen: React.FC = () => {
       </View>
 
       <AppText variant="light" style={styles.version}>
-        Version 1.0.0
+        version 1.0.0
       </AppText>
     </View>
   );

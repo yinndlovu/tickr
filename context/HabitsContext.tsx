@@ -68,7 +68,6 @@ export const HabitsProvider = ({ children }: { children: ReactNode }) => {
           setMainHabitIdState(storedMainId);
         }
       } catch {
-        // If storage is corrupted/unreadable, fall back to empty state.
         if (isMounted) {
           setHabits([]);
           setMainHabitIdState("");
@@ -85,7 +84,6 @@ export const HabitsProvider = ({ children }: { children: ReactNode }) => {
     };
   }, []);
 
-  // Keep mainHabitId valid when habits change.
   useEffect(() => {
     if (!isHabitsLoaded) {
       return;
@@ -99,7 +97,6 @@ export const HabitsProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [habits, mainHabitId, isHabitsLoaded]);
 
-  // Persist after initial load.
   useEffect(() => {
     if (!isHabitsLoaded) {
       return;

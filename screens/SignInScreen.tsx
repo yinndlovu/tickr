@@ -69,7 +69,7 @@ const SignInScreen: React.FC = () => {
           variant="bold"
           style={[styles.headerTitle, { color: theme.text }]}
         >
-          Sign in
+          sign in
         </AppText>
         <View style={{ width: 24 }} />
       </View>
@@ -79,7 +79,7 @@ const SignInScreen: React.FC = () => {
           variant="light"
           style={{ color: theme.subtext, marginBottom: 18 }}
         >
-          Sign in to back up your data and sync across devices.
+          sign in to back up your data and sync across devices.
         </AppText>
 
         <TouchableOpacity
@@ -94,7 +94,7 @@ const SignInScreen: React.FC = () => {
         >
           <Ionicons name="logo-google" size={18} color={theme.text} />
           <AppText variant="medium" style={{ color: theme.text }}>
-            Continue with Google
+            continue with Google
           </AppText>
         </TouchableOpacity>
 
@@ -106,7 +106,7 @@ const SignInScreen: React.FC = () => {
             variant="light"
             style={{ color: theme.subtext, fontSize: 12 }}
           >
-            OR
+            or
           </AppText>
           <View
             style={[styles.dividerLine, { backgroundColor: theme.accent }]}
@@ -118,7 +118,7 @@ const SignInScreen: React.FC = () => {
             variant="medium"
             style={{ color: theme.subtext, fontSize: 12 }}
           >
-            EMAIL
+            email
           </AppText>
           <TextInput
             value={email}
@@ -139,7 +139,7 @@ const SignInScreen: React.FC = () => {
             variant="medium"
             style={{ color: theme.subtext, fontSize: 12 }}
           >
-            PASSWORD
+            password
           </AppText>
           <View style={[styles.passwordRow, { borderColor: theme.accent }]}>
             <TextInput
@@ -175,7 +175,7 @@ const SignInScreen: React.FC = () => {
           accessibilityLabel="Sign in"
         >
           <AppText variant="bold" style={{ color: "white" }}>
-            Sign in
+            sign in
           </AppText>
         </TouchableOpacity>
 
@@ -186,11 +186,11 @@ const SignInScreen: React.FC = () => {
           accessibilityLabel="Create account"
         >
           <AppText variant="light" style={{ color: theme.subtext }}>
-            Don’t have an account?
+            don't have an account?
           </AppText>
           <AppText variant="bold" style={{ color: theme.primary }}>
             {" "}
-            Create one
+            create one
           </AppText>
         </TouchableOpacity>
       </View>

@@ -69,7 +69,7 @@ const SignUpScreen: React.FC = () => {
           variant="bold"
           style={[styles.headerTitle, { color: theme.text }]}
         >
-          Create account
+          create account
         </AppText>
         <View style={{ width: 24 }} />
       </View>
@@ -79,7 +79,7 @@ const SignUpScreen: React.FC = () => {
           variant="light"
           style={{ color: theme.subtext, marginBottom: 18 }}
         >
-          Create an account to back up your data and sync across devices.
+          create an account to back up your data and sync across devices.
         </AppText>
 
         <TouchableOpacity
@@ -94,7 +94,7 @@ const SignUpScreen: React.FC = () => {
         >
           <Ionicons name="logo-google" size={18} color={theme.text} />
           <AppText variant="medium" style={{ color: theme.text }}>
-            Sign up with Google
+            sign up with google
           </AppText>
         </TouchableOpacity>
 
@@ -106,7 +106,7 @@ const SignUpScreen: React.FC = () => {
             variant="light"
             style={{ color: theme.subtext, fontSize: 12 }}
           >
-            OR
+            or
           </AppText>
           <View
             style={[styles.dividerLine, { backgroundColor: theme.accent }]}
@@ -118,7 +118,7 @@ const SignUpScreen: React.FC = () => {
             variant="medium"
             style={{ color: theme.subtext, fontSize: 12 }}
           >
-            NAME
+            name
           </AppText>
           <TextInput
             value={name}
@@ -137,7 +137,7 @@ const SignUpScreen: React.FC = () => {
             variant="medium"
             style={{ color: theme.subtext, fontSize: 12 }}
           >
-            EMAIL
+            email
           </AppText>
           <TextInput
             value={email}
@@ -158,7 +158,7 @@ const SignUpScreen: React.FC = () => {
             variant="medium"
             style={{ color: theme.subtext, fontSize: 12 }}
           >
-            PASSWORD
+            password
           </AppText>
           <View style={[styles.passwordRow, { borderColor: theme.accent }]}>
             <TextInput
@@ -194,7 +194,7 @@ const SignUpScreen: React.FC = () => {
           accessibilityLabel="Create account"
         >
           <AppText variant="bold" style={{ color: "white" }}>
-            Create account
+            create account
           </AppText>
         </TouchableOpacity>
 
@@ -205,11 +205,11 @@ const SignUpScreen: React.FC = () => {
           accessibilityLabel="Go to sign in"
         >
           <AppText variant="light" style={{ color: theme.subtext }}>
-            Already have an account?
+            already have an account?
           </AppText>
           <AppText variant="bold" style={{ color: theme.primary }}>
             {" "}
-            Sign in
+            sign in
           </AppText>
         </TouchableOpacity>
       </View>
@@ -218,7 +218,9 @@ const SignUpScreen: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  container: { 
+    flex: 1 
+  },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -226,8 +228,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 15,
   },
-  headerTitle: { fontSize: 20 },
-  content: { paddingHorizontal: 20, paddingTop: 10 },
+  headerTitle: { 
+    fontSize: 20 
+  },
+  content: { 
+    paddingHorizontal: 20, 
+    paddingTop: 10 
+  },
   socialButton: {
     borderWidth: 1,
     borderRadius: 16,
@@ -243,8 +250,15 @@ const styles = StyleSheet.create({
     gap: 10,
     marginVertical: 16,
   },
-  dividerLine: { flex: 1, height: 1, opacity: 0.8 },
-  field: { gap: 8, marginTop: 12 },
+  dividerLine: { 
+    flex: 1, 
+    height: 1, 
+    opacity: 0.8 
+  },
+  field: { 
+    gap: 8, 
+    marginTop: 12 
+  },
   input: {
     borderWidth: 1,
     borderRadius: 14,
@@ -259,7 +273,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingLeft: 14,
   },
-  passwordInput: { flex: 1, paddingVertical: 12, fontSize: 15 },
+  passwordInput: { 
+    flex: 1, 
+    paddingVertical: 12, 
+    fontSize: 15 
+  },
   eyeButton: {
     width: 44,
     height: 44,

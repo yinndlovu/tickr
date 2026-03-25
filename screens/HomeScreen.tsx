@@ -57,7 +57,7 @@ const HomeScreen: React.FC = () => {
                 variant="bold"
                 style={[styles.title, { color: theme.text }]}
               >
-                Progress
+                progress
               </AppText>
               <View style={styles.headerActions}>
                 <TouchableOpacity
@@ -103,7 +103,7 @@ const HomeScreen: React.FC = () => {
                   variant="bold"
                   style={{ color: theme.text, fontSize: 18 }}
                 >
-                  Start tracking something
+                  start tracking something
                 </AppText>
                 <AppText
                   variant="light"
@@ -113,7 +113,7 @@ const HomeScreen: React.FC = () => {
                     textAlign: "center",
                   }}
                 >
-                  Add your first tracker to see your progress here.
+                  add your first tracker to see your progress here.
                 </AppText>
                 <TouchableOpacity
                   onPress={() => setIsNewHabitModalVisible(true)}
@@ -123,7 +123,7 @@ const HomeScreen: React.FC = () => {
                 >
                   <Ionicons name="add" size={18} color="white" />
                   <AppText variant="bold" style={{ color: "white" }}>
-                    Add tracker
+                    add tracker
                   </AppText>
                 </TouchableOpacity>
               </View>
@@ -138,7 +138,7 @@ const HomeScreen: React.FC = () => {
                     { color: theme.subtext },
                   ]}
                 >
-                  OTHER TRACKERS
+                  other habits
                 </AppText>
                 <TouchableOpacity
                   onPress={() => setIsNewHabitModalVisible(true)}

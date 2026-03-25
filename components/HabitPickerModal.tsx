@@ -42,7 +42,7 @@ const HabitPickerModal: React.FC<Props> = ({
           <View style={[styles.handle, { backgroundColor: theme.accent }]} />
 
           <AppText variant="bold" style={[styles.title, { color: theme.text }]}>
-            Switch Main Tracker
+            switch main habit
           </AppText>
 
           <FlatList

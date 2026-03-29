@@ -1,4 +1,7 @@
+// external
 import axios from "axios";
+
+// internal
 import { API_BASE_URL } from "../configuration/config";
 
 export const api = axios.create({

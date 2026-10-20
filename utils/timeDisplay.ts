@@ -35,7 +35,9 @@ export function formatHabitDuration(
     const monthsTotal = years * 12 + monthsRemainder;
 
     const textParts: string[] = [];
-    if (monthsTotal > 0) textParts.push(`${monthsTotal} months`);
+    if (monthsTotal > 0) {
+      textParts.push(`${monthsTotal} months`);
+    }
     textParts.push(`${days} days`);
     textParts.push(`${hours} hrs`);
 

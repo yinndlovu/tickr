@@ -6,7 +6,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { useFonts } from "expo-font";
 import { ReactNode, useCallback } from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 // contexts
 import { ThemeProvider, useTheme } from "./context/ThemeContext";
@@ -26,7 +26,7 @@ import NewHabitScreen from "./screens/NewHabitScreen";
 import SyncChoiceModal from "./components/SyncChoiceModal";
 
 SplashScreen.preventAutoHideAsync();
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
 const AppContent = () => {
   const { isDark, theme } = useTheme();
@@ -37,7 +37,7 @@ const AppContent = () => {
         <Stack.Navigator
           screenOptions={{
             headerShown: false,
-            cardStyle: { backgroundColor: theme.background },
+            contentStyle: { backgroundColor: theme.background },
           }}
         >
           <Stack.Screen name="Home" component={HomeScreen} />
@@ -49,14 +49,13 @@ const AppContent = () => {
             component={NewHabitScreen}
             options={{
               presentation: "transparentModal",
-              cardStyle: { backgroundColor: "transparent" },
+              contentStyle: { backgroundColor: "transparent" },
             }}
           />
         </Stack.Navigator>
       </NavigationContainer>
 
       <SyncChoiceModal />
-
       <StatusBar style={isDark ? "light" : "dark"} />
     </>
   );
@@ -67,10 +66,7 @@ type NewType = {
   children: ReactNode;
 };
 
-const RootView = ({
-  onLayout,
-  children,
-}: NewType) => {
+const RootView = ({ onLayout, children }: NewType) => {
   const { theme } = useTheme();
 
   return (

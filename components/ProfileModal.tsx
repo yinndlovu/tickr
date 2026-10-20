@@ -8,9 +8,12 @@ import {
   View,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { formatDistanceToNow } from "date-fns";
 
 // internal
 import { useTheme } from "../context/ThemeContext";
+import { useAuth } from "../context/AuthContext";
+import { useSync } from "../context/SyncContext";
 import { AppText } from "./AppText";
 
 type Props = {
@@ -21,6 +24,17 @@ type Props = {
 
 const ProfileModal: React.FC<Props> = ({ isVisible, onClose, onSignIn }) => {
   const { theme } = useTheme();
+  const { user, signOut } = useAuth();
+  const { status, lastSyncedAt, syncNow } = useSync();
+
+  const statusText =
+    status === "syncing"
+      ? "syncing…"
+      : status === "error"
+        ? "couldn't sync. it will retry automatically."
+        : lastSyncedAt
+          ? `synced ${formatDistanceToNow(new Date(lastSyncedAt), { addSuffix: true })}`
+          : "waiting to sync";
 
   return (
     <Modal
@@ -54,37 +68,95 @@ const ProfileModal: React.FC<Props> = ({ isVisible, onClose, onSignIn }) => {
             </TouchableOpacity>
           </View>
 
-          <AppText
-            variant="light"
-            style={{ color: theme.subtext, marginTop: 6, lineHeight: 18 }}
-          >
-            sign in to back up your trackers and access them on any device.
-            Tickr is offline-first, so your data stays on this device unless you
-            choose to sync.
-          </AppText>
+          {user ? (
+            <>
+              <AppText
+                variant="medium"
+                style={{ color: theme.text, marginTop: 6 }}
+                numberOfLines={1}
+              >
+                {user.email}
+              </AppText>
+              <AppText
+                variant="light"
+                style={{ color: theme.subtext, marginTop: 4, lineHeight: 18 }}
+              >
+                {statusText}
+              </AppText>
 
-          <TouchableOpacity
-            onPress={onSignIn}
-            style={[styles.signInButton, { backgroundColor: theme.primary }]}
-            accessibilityRole="button"
-            accessibilityLabel="Sign in"
-          >
-            <Ionicons name="log-in-outline" size={18} color="white" />
-            <AppText variant="bold" style={{ color: "white" }}>
-              sign in
-            </AppText>
-          </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  void syncNow();
+                }}
+                disabled={status === "syncing"}
+                style={[
+                  styles.signInButton,
+                  {
+                    backgroundColor: theme.primary,
+                    opacity: status === "syncing" ? 0.6 : 1,
+                  },
+                ]}
+                accessibilityRole="button"
+                accessibilityLabel="Sync now"
+              >
+                <Ionicons name="sync-outline" size={18} color="white" />
+                <AppText variant="bold" style={{ color: "white" }}>
+                  sync now
+                </AppText>
+              </TouchableOpacity>
 
-          <TouchableOpacity
-            onPress={onClose}
-            style={[styles.secondaryButton, { borderColor: theme.accent }]}
-            accessibilityRole="button"
-            accessibilityLabel="Not now"
-          >
-            <AppText variant="medium" style={{ color: theme.text }}>
-              not now
-            </AppText>
-          </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  void signOut();
+                  onClose();
+                }}
+                style={[styles.secondaryButton, { borderColor: theme.accent }]}
+                accessibilityRole="button"
+                accessibilityLabel="Sign out"
+              >
+                <AppText variant="medium" style={{ color: theme.text }}>
+                  sign out
+                </AppText>
+              </TouchableOpacity>
+            </>
+          ) : (
+            <>
+              <AppText
+                variant="light"
+                style={{ color: theme.subtext, marginTop: 6, lineHeight: 18 }}
+              >
+                sign in to back up your trackers and access them on any device.
+                Tickr is offline-first, so your data stays on this device unless
+                you choose to sync.
+              </AppText>
+
+              <TouchableOpacity
+                onPress={onSignIn}
+                style={[
+                  styles.signInButton,
+                  { backgroundColor: theme.primary },
+                ]}
+                accessibilityRole="button"
+                accessibilityLabel="Sign in"
+              >
+                <Ionicons name="log-in-outline" size={18} color="white" />
+                <AppText variant="bold" style={{ color: "white" }}>
+                  sign in
+                </AppText>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={onClose}
+                style={[styles.secondaryButton, { borderColor: theme.accent }]}
+                accessibilityRole="button"
+                accessibilityLabel="Not now"
+              >
+                <AppText variant="medium" style={{ color: theme.text }}>
+                  not now
+                </AppText>
+              </TouchableOpacity>
+            </>
+          )}
         </Pressable>
       </Pressable>
     </Modal>

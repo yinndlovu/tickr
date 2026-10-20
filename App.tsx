@@ -11,13 +11,19 @@ import { createStackNavigator } from "@react-navigation/stack";
 // contexts
 import { ThemeProvider, useTheme } from "./context/ThemeContext";
 import { PreferencesProvider } from "./context/PreferencesContext";
+import { AuthProvider } from "./context/AuthContext";
 import { HabitsProvider } from "./context/HabitsContext";
+import { SyncProvider } from "./context/SyncContext";
 
 // screens
 import HomeScreen from "./screens/HomeScreen";
 import SettingsScreen from "./screens/SettingsScreen";
 import SignInScreen from "./screens/SignInScreen";
 import SignUpScreen from "./screens/SignUpScreen";
+import NewHabitScreen from "./screens/NewHabitScreen";
+
+// components
+import SyncChoiceModal from "./components/SyncChoiceModal";
 
 SplashScreen.preventAutoHideAsync();
 const Stack = createStackNavigator();
@@ -38,8 +44,18 @@ const AppContent = () => {
           <Stack.Screen name="Settings" component={SettingsScreen} />
           <Stack.Screen name="SignIn" component={SignInScreen} />
           <Stack.Screen name="SignUp" component={SignUpScreen} />
+          <Stack.Screen
+            name="NewHabit"
+            component={NewHabitScreen}
+            options={{
+              presentation: "transparentModal",
+              cardStyle: { backgroundColor: "transparent" },
+            }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
+
+      <SyncChoiceModal />
 
       <StatusBar style={isDark ? "light" : "dark"} />
     </>
@@ -91,9 +107,13 @@ export default function App() {
       <SafeAreaProvider>
         <RootView onLayout={onLayoutRootView}>
           <PreferencesProvider>
-            <HabitsProvider>
-              <AppContent />
-            </HabitsProvider>
+            <AuthProvider>
+              <HabitsProvider>
+                <SyncProvider>
+                  <AppContent />
+                </SyncProvider>
+              </HabitsProvider>
+            </AuthProvider>
           </PreferencesProvider>
         </RootView>
       </SafeAreaProvider>

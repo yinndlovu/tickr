@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  KeyboardAvoidingView,
+  ScrollView,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { useTheme } from "../context/ThemeContext";
+import { useAuth } from "../context/AuthContext";
 import { AppText } from "../components/AppText";
-import { authenticateWithGoogle } from "../services/authService";
 import { GOOGLE_ANDROID_CLIENT_ID } from "../configuration/config";
 
 WebBrowser.maybeCompleteAuthSession();
@@ -18,11 +24,14 @@ const SignUpScreen: React.FC = () => {
   const { theme } = useTheme();
   const insets = useSafeAreaInsets();
   const navigation = useNavigation<any>();
+  const { registerWithEmail, signInWithGoogle } = useAuth();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [request, response, promptAsync] = Google.useAuthRequest({
     androidClientId: GOOGLE_ANDROID_CLIENT_ID,
@@ -40,16 +49,35 @@ const SignUpScreen: React.FC = () => {
       }
 
       try {
-        const data = await authenticateWithGoogle(idToken);
-        await AsyncStorage.setItem("token", data.token);
+        await signInWithGoogle(idToken);
         navigation.goBack();
       } catch (e) {
-        console.warn("Google sign-up error", e);
+        setError(e instanceof Error ? e.message : "could not sign up.");
       }
     };
 
     handleGoogleResponse();
-  }, [response, navigation]);
+  }, [response, navigation, signInWithGoogle]);
+
+  const handleSubmit = async () => {
+    if (!name.trim() || !email.trim() || !password) {
+      setError("fill in your name, email and a password.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    setError(null);
+    try {
+      await registerWithEmail(name, email, password);
+      navigation.goBack();
+    } catch (e) {
+      setError(
+        e instanceof Error ? e.message : "could not create the account.",
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <View
@@ -74,152 +102,186 @@ const SignUpScreen: React.FC = () => {
         <View style={{ width: 24 }} />
       </View>
 
-      <View style={styles.content}>
-        <AppText
-          variant="light"
-          style={{ color: theme.subtext, marginBottom: 18 }}
+      <KeyboardAvoidingView behavior="padding" style={styles.kav}>
+        <ScrollView
+          contentContainerStyle={styles.content}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
         >
-          create an account to back up your data and sync across devices.
-        </AppText>
-
-        <TouchableOpacity
-          onPress={() => promptAsync()}
-          disabled={!request}
-          style={[
-            styles.socialButton,
-            { borderColor: theme.accent, backgroundColor: theme.card },
-          ]}
-          accessibilityRole="button"
-          accessibilityLabel="Sign up with Google"
-        >
-          <Ionicons name="logo-google" size={18} color={theme.text} />
-          <AppText variant="medium" style={{ color: theme.text }}>
-            sign up with google
-          </AppText>
-        </TouchableOpacity>
-
-        <View style={[styles.dividerRow, { borderColor: theme.accent }]}>
-          <View
-            style={[styles.dividerLine, { backgroundColor: theme.accent }]}
-          />
           <AppText
             variant="light"
-            style={{ color: theme.subtext, fontSize: 12 }}
+            style={{ color: theme.subtext, marginBottom: 18 }}
           >
-            or
+            create an account to back up your data and sync across devices.
           </AppText>
-          <View
-            style={[styles.dividerLine, { backgroundColor: theme.accent }]}
-          />
-        </View>
 
-        <View style={styles.field}>
-          <AppText
-            variant="medium"
-            style={{ color: theme.subtext, fontSize: 12 }}
-          >
-            name
-          </AppText>
-          <TextInput
-            value={name}
-            onChangeText={setName}
-            placeholder="Your name"
-            placeholderTextColor={theme.subtext}
+          <TouchableOpacity
+            onPress={() => promptAsync()}
+            disabled={!request}
             style={[
-              styles.input,
-              { color: theme.text, borderColor: theme.accent },
+              styles.socialButton,
+              { borderColor: theme.accent, backgroundColor: theme.card },
             ]}
-          />
-        </View>
-
-        <View style={styles.field}>
-          <AppText
-            variant="medium"
-            style={{ color: theme.subtext, fontSize: 12 }}
+            accessibilityRole="button"
+            accessibilityLabel="Sign up with Google"
           >
-            email
-          </AppText>
-          <TextInput
-            value={email}
-            onChangeText={setEmail}
-            placeholder="you@example.com"
-            placeholderTextColor={theme.subtext}
-            autoCapitalize="none"
-            keyboardType="email-address"
-            style={[
-              styles.input,
-              { color: theme.text, borderColor: theme.accent },
-            ]}
-          />
-        </View>
+            <Ionicons name="logo-google" size={18} color={theme.text} />
+            <AppText variant="medium" style={{ color: theme.text }}>
+              sign up with google
+            </AppText>
+          </TouchableOpacity>
 
-        <View style={styles.field}>
-          <AppText
-            variant="medium"
-            style={{ color: theme.subtext, fontSize: 12 }}
-          >
-            password
-          </AppText>
-          <View style={[styles.passwordRow, { borderColor: theme.accent }]}>
-            <TextInput
-              value={password}
-              onChangeText={setPassword}
-              placeholder="Create a password"
-              placeholderTextColor={theme.subtext}
-              secureTextEntry={!showPassword}
-              autoCapitalize="none"
-              style={[styles.passwordInput, { color: theme.text }]}
+          <View style={[styles.dividerRow, { borderColor: theme.accent }]}>
+            <View
+              style={[styles.dividerLine, { backgroundColor: theme.accent }]}
             />
-            <TouchableOpacity
-              onPress={() => setShowPassword((v) => !v)}
-              style={styles.eyeButton}
-              accessibilityRole="button"
-              accessibilityLabel={
-                showPassword ? "Hide password" : "Show password"
-              }
+            <AppText
+              variant="light"
+              style={{ color: theme.subtext, fontSize: 12 }}
             >
-              <Ionicons
-                name={showPassword ? "eye-off-outline" : "eye-outline"}
-                size={20}
-                color={theme.subtext}
-              />
-            </TouchableOpacity>
+              or
+            </AppText>
+            <View
+              style={[styles.dividerLine, { backgroundColor: theme.accent }]}
+            />
           </View>
-        </View>
 
-        <TouchableOpacity
-          onPress={() => {}}
-          style={[styles.primaryButton, { backgroundColor: theme.primary }]}
-          accessibilityRole="button"
-          accessibilityLabel="Create account"
-        >
-          <AppText variant="bold" style={{ color: "white" }}>
-            create account
-          </AppText>
-        </TouchableOpacity>
+          <View style={styles.field}>
+            <AppText
+              variant="medium"
+              style={{ color: theme.subtext, fontSize: 12 }}
+            >
+              name
+            </AppText>
+            <TextInput
+              value={name}
+              onChangeText={(t) => {
+                setName(t);
+                if (error) setError(null);
+              }}
+              placeholder="Your name"
+              placeholderTextColor={theme.subtext}
+              style={[
+                styles.input,
+                { color: theme.text, borderColor: theme.accent },
+              ]}
+            />
+          </View>
 
-        <TouchableOpacity
-          onPress={() => navigation.navigate("SignIn")}
-          style={styles.switchRow}
-          accessibilityRole="button"
-          accessibilityLabel="Go to sign in"
-        >
-          <AppText variant="light" style={{ color: theme.subtext }}>
-            already have an account?
-          </AppText>
-          <AppText variant="bold" style={{ color: theme.primary }}>
-            {" "}
-            sign in
-          </AppText>
-        </TouchableOpacity>
-      </View>
+          <View style={styles.field}>
+            <AppText
+              variant="medium"
+              style={{ color: theme.subtext, fontSize: 12 }}
+            >
+              email
+            </AppText>
+            <TextInput
+              value={email}
+              onChangeText={(t) => {
+                setEmail(t);
+                if (error) setError(null);
+              }}
+              placeholder="you@example.com"
+              placeholderTextColor={theme.subtext}
+              autoCapitalize="none"
+              keyboardType="email-address"
+              style={[
+                styles.input,
+                { color: theme.text, borderColor: theme.accent },
+              ]}
+            />
+          </View>
+
+          <View style={styles.field}>
+            <AppText
+              variant="medium"
+              style={{ color: theme.subtext, fontSize: 12 }}
+            >
+              password
+            </AppText>
+            <View style={[styles.passwordRow, { borderColor: theme.accent }]}>
+              <TextInput
+                value={password}
+                onChangeText={(t) => {
+                  setPassword(t);
+                  if (error) setError(null);
+                }}
+                placeholder="Create a password"
+                placeholderTextColor={theme.subtext}
+                secureTextEntry={!showPassword}
+                autoCapitalize="none"
+                style={[styles.passwordInput, { color: theme.text }]}
+              />
+              <TouchableOpacity
+                onPress={() => setShowPassword((v) => !v)}
+                style={styles.eyeButton}
+                accessibilityRole="button"
+                accessibilityLabel={
+                  showPassword ? "Hide password" : "Show password"
+                }
+              >
+                <Ionicons
+                  name={showPassword ? "eye-off-outline" : "eye-outline"}
+                  size={20}
+                  color={theme.subtext}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          {error ? (
+            <AppText
+              variant="medium"
+              style={{ color: "#D64545", marginTop: 12 }}
+            >
+              {error}
+            </AppText>
+          ) : null}
+
+          <TouchableOpacity
+            onPress={handleSubmit}
+            disabled={isSubmitting}
+            style={[
+              styles.primaryButton,
+              {
+                backgroundColor: theme.primary,
+                opacity: isSubmitting ? 0.6 : 1,
+              },
+            ]}
+            accessibilityRole="button"
+            accessibilityLabel="Create account"
+          >
+            <AppText variant="bold" style={{ color: "white" }}>
+              {isSubmitting ? "creating account…" : "create account"}
+            </AppText>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => navigation.navigate("SignIn")}
+            style={styles.switchRow}
+            accessibilityRole="button"
+            accessibilityLabel="Go to sign in"
+          >
+            <AppText variant="light" style={{ color: theme.subtext }}>
+              already have an account?
+            </AppText>
+            <AppText variant="bold" style={{ color: theme.primary }}>
+              {" "}
+              sign in
+            </AppText>
+          </TouchableOpacity>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { 
-    flex: 1 
+  container: {
+    flex: 1,
+  },
+  kav: {
+    flex: 1,
   },
   header: {
     flexDirection: "row",
@@ -228,12 +290,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 15,
   },
-  headerTitle: { 
-    fontSize: 20 
+  headerTitle: {
+    fontSize: 20,
   },
-  content: { 
-    paddingHorizontal: 20, 
-    paddingTop: 10 
+  content: {
+    paddingHorizontal: 20,
+    paddingTop: 10,
+    paddingBottom: 24,
   },
   socialButton: {
     borderWidth: 1,
@@ -250,14 +313,14 @@ const styles = StyleSheet.create({
     gap: 10,
     marginVertical: 16,
   },
-  dividerLine: { 
-    flex: 1, 
-    height: 1, 
-    opacity: 0.8 
+  dividerLine: {
+    flex: 1,
+    height: 1,
+    opacity: 0.8,
   },
-  field: { 
-    gap: 8, 
-    marginTop: 12 
+  field: {
+    gap: 8,
+    marginTop: 12,
   },
   input: {
     borderWidth: 1,
@@ -273,10 +336,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingLeft: 14,
   },
-  passwordInput: { 
-    flex: 1, 
-    paddingVertical: 12, 
-    fontSize: 15 
+  passwordInput: {
+    flex: 1,
+    paddingVertical: 12,
+    fontSize: 15,
   },
   eyeButton: {
     width: 44,

@@ -13,7 +13,6 @@ import { AppText } from "../components/AppText";
 // contents
 import HabitPickerModal from "../components/HabitPickerModal";
 import CountdownHero from "../components/CountdownHero";
-import NewHabitModal from "../components/NewHabitModal";
 import ProfileModal from "../components/ProfileModal";
 import { formatHabitDuration } from "../utils/timeDisplay";
 
@@ -22,11 +21,10 @@ const HomeScreen: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
   const insets = useSafeAreaInsets();
   const { timeDisplayMode } = usePreferences();
-  const { habits, mainHabitId, setMainHabitId, addHabit } = useHabits();
+  const { habits, mainHabitId, setMainHabitId } = useHabits();
 
   // use states
   const [isModalVisible, setModalVisible] = useState(false);
-  const [isNewHabitModalVisible, setIsNewHabitModalVisible] = useState(false);
   const [isProfileModalVisible, setIsProfileModalVisible] = useState(false);
 
   const mainHabit = habits.find((h) => h.id === mainHabitId) || habits[0];
@@ -116,7 +114,7 @@ const HomeScreen: React.FC = () => {
                   add your first tracker to see your progress here.
                 </AppText>
                 <TouchableOpacity
-                  onPress={() => setIsNewHabitModalVisible(true)}
+                  onPress={() => navigation.navigate("NewHabit")}
                   style={[styles.emptyCta, { backgroundColor: theme.primary }]}
                   accessibilityRole="button"
                   accessibilityLabel="Add your first tracker"
@@ -133,15 +131,12 @@ const HomeScreen: React.FC = () => {
               <View style={styles.sectionRow}>
                 <AppText
                   variant="medium"
-                  style={[
-                    styles.sectionRowLabel,
-                    { color: theme.subtext },
-                  ]}
+                  style={[styles.sectionRowLabel, { color: theme.subtext }]}
                 >
                   other habits
                 </AppText>
                 <TouchableOpacity
-                  onPress={() => setIsNewHabitModalVisible(true)}
+                  onPress={() => navigation.navigate("NewHabit")}
                   style={styles.addButton}
                   accessibilityRole="button"
                   accessibilityLabel="Add tracker"
@@ -187,12 +182,6 @@ const HomeScreen: React.FC = () => {
         currentHabitId={mainHabitId}
         onClose={() => setModalVisible(false)}
         onSelect={(id) => setMainHabitId(id)}
-      />
-
-      <NewHabitModal
-        isVisible={isNewHabitModalVisible}
-        onClose={() => setIsNewHabitModalVisible(false)}
-        onCreate={addHabit}
       />
 
       <ProfileModal
